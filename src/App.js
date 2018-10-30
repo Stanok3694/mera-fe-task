@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import { ProductList } from "./components";
 
 class App extends Component {
   constructor() {
@@ -13,7 +14,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch('https://api.treez.io/v1.0/dispensary/goe/menu/product_list?type=all&offset=0&limit=600"')
+    fetch('https://api.treez.io/v1.0/dispensary/goe/menu/product_list?type=all&offset=0&limit=600')
       .then(response => response.json())
       .then(data => {
         // just for fun -> i will handle this error from your super api ;)
@@ -49,8 +50,7 @@ class App extends Component {
     if (!loading && !error && data.length !== 0) {
       return (
         <div className="App">
-          {/* here will be super styled list for you <3 */}
-          {`here is data - ${data}`} 
+          <ProductList data = {data} />
         </div>
       );
     }
