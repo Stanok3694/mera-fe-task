@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { ProductItem } from "./";
+import { ProductItem } from ".";
 
 class ProductList extends Component {
     constructor(props) {
@@ -13,7 +13,7 @@ class ProductList extends Component {
 
     renderList(product_list) {
         return (
-            <div>
+            <ul className="flex-container">
                 {
                     product_list.map((product, index) => {
                         if (product.active) {
@@ -28,7 +28,7 @@ class ProductList extends Component {
                         return null;
                     })
                 }
-            </div>
+            </ul>
         );
     }
 
@@ -38,7 +38,16 @@ class ProductList extends Component {
         return (
             <div>
                 {
-                    data.product_list.length > 0 && this.renderList(data.product_list)
+                    data.length > 0 && this.renderList(data)
+                }
+                {
+                    data.length === 0 && (
+                        <div>
+                            <h1>
+                                EMPTY LIST
+                            </h1>
+                        </div>
+                    )
                 }
             </div>
         );

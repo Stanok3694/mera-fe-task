@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import "../App.css";
 
 class ProductItem extends Component {
     constructor(props) {
@@ -35,32 +36,48 @@ class ProductItem extends Component {
         )
     }
 
+    getThcPercentage(thc_percentage) {
+        if (thc_percentage === '-.-') {
+            return null;
+        }
+
+        return (
+            <p>{thc_percentage}</p>
+        )
+    }
+
+    getClassification(classifications) {
+        return (
+            <div>
+                {
+                    classifications.map((c, i) => {
+                        return <p key={i}>{c}</p>
+                    })
+                }
+            </div>
+        );
+    }
+
     render() {
         const { data } = this.props;
 
         return (
-            <div>
+            <li className="flex-item">
                 <img
                     src={data.images.cropped_image}
                     alt="product (cropped)"
+                    className="image"
                 />
                 <p>{data.product_name}</p>
                 <p>{data.brand}</p>
                 <p>{data.type}</p>
-                <p>{data.attributes.thc_percentage}</p> {/* it should be preprocessed - "-.-" */}
-                <div>
-                    {
-                        data.classifications.map((c, i) => {
-                            return <p key={i}>{c}</p>
-                        })
-                    }
-                </div>
-                <div>
-                    {
-                        this.renderPrices(this.prepareSizePriceList(data.size_list))
-                    }
-                </div>
-            </div>
+                {this.getThcPercentage(data.attributes.thc_percentage)}
+                {this.getClassification(data.classifications)}
+                {
+                    this.renderPrices(this.prepareSizePriceList(data.size_list))
+                }
+
+            </li>
         );
     }
 }

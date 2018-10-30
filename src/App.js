@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import { ProductList } from "./components";
+import { ProductList, ErrorView } from "./components";
+import Loading from './components/Loading';
 
 class App extends Component {
   constructor() {
@@ -19,41 +20,31 @@ class App extends Component {
       .then(data => {
         // just for fun -> i will handle this error from your super api ;)
         if (data && data.error) {
-          this.setState({ errData: data.error, error: true})
+          this.setState({ errData: data.error, error: true, loading: false})
         } else {
           this.setState({ data, loading: false })
         }
       })
-      .catch(e => this.setState({ errData: e, error: true }));
+      .catch(e => this.setState({ errData: e, error: true, loading: false }));
   }
 
   render() {
     const { error, errData, loading, data } = this.state;
+    const product_list = (data && data.product_list) || [];
+    const hasError = error || (data && data.error);
 
-    if (error || (data && data.error)) {
-      return (
-        <div>
-          <h1>SOMETHING WENT WRONG!</h1>
-          <p>{errData}</p>
-        </div>
-      )
-    }
-
-    if (loading) {
-      return (
-        <div>
-          <h1>LOADING, PLEASE WAIT...</h1>
-        </div>
-      )
-    }
-    
-    if (!loading && !error && data.length !== 0) {
-      return (
-        <div className="App">
-          <ProductList data = {data} />
-        </div>
-      );
-    }
+    return (
+      <div>
+        <Loading loading = {loading}>
+          <ErrorView 
+            hasError = {hasError} 
+            errData = {errData}
+          >
+            <ProductList data = {product_list} />
+          </ErrorView>
+        </Loading>
+      </div>
+    );
   }
 }
 
