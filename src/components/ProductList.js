@@ -16,12 +16,16 @@ class ProductList extends Component {
             <div>
                 {
                     product_list.map((product, index) => {
-                        return (
-                            <ProductItem
-                                key={index}
-                                data={product}
-                            />
-                        )
+                        if (product.active) {
+                            return (
+                                <ProductItem
+                                    key={index}
+                                    data={product}
+                                />
+                            )
+                        }
+
+                        return null;
                     })
                 }
             </div>
